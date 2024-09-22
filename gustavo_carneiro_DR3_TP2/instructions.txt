@@ -1,7 +1,0 @@
-Primeiramente é recomendável a criação de um ambiente virtual via comando: python -m venv tp1
-
-Depois é necessário ativar o ambiente virtual via: .\tp1\Scripts\activate
-
-E então fazer o pip: pip install -r requirements.txt
-
-Por fim, só falta executar os códigos com o comando streamlit run '.\main\streamlit.py'.
