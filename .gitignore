@@ -1,0 +1,10 @@
+node_modules/
+build/
+dist/
+env/
+logs/
+temp/
+*.log
+*.tmp
+*.env
+/DR3tp2/*
