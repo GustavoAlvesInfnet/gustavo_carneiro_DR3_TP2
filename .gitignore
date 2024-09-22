@@ -7,4 +7,4 @@ temp/
 *.log
 *.tmp
 *.env
-/DR3tp2/*
+DR3tp2/
