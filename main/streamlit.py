@@ -120,16 +120,33 @@ def upload():
     st.write('Em desenvolvimento...')
 
 
-def analise_web(): 
+def scrapping(): 
+    st.header("Scrapping")
+
+    st.write("Selecione o cargo e a região:")
+
+    # digite o cargo e a região
+    cargo = st.text_input('Cargo')
+
+    regiao = st.text_input('Região')
+
+    num_pags = st.text_input('Quantidade de paginas')
+
     # button para executar o scraping
     if st.button('Executar o scraping'):
-        executar_scrapping()
+        if cargo == '':
+            cargo = 'Analista de Dados'
+        if regiao == '':
+            regiao = 'São Paulo'
+        if num_pags == '':
+            num_pags = 2
+        executar_scrapping(cargo, regiao, num_pags)
 
     df = pd.read_json('./arquivosGerados/8_vagasIndeed.json')
     st.dataframe(df)
 
 # Usa um sidebar para fazer a paginação
-page = st.sidebar.selectbox('Selecione uma opção', ['Introdução', 'Analise dinâmica', 'Upload para análise individual', 'Analise Web'])
+page = st.sidebar.selectbox('Selecione uma opção', ['Introdução', 'Analise dinâmica', 'Upload para análise individual', 'Scrapping'])
 
 if page == 'Introdução':
     introducao()
@@ -137,8 +154,8 @@ elif page == 'Analise dinâmica':
     analise_dinamica()
 elif page == 'Upload para análise individual':
     upload()
-elif page == 'Analise Web':
-    analise_web()
+elif page == 'Scrapping':
+    scrapping()
 
 
 

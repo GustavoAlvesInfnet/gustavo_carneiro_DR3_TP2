@@ -9,7 +9,7 @@ import datetime
 # configurações do programa
 options = Options()
 # define se é para mostrar a janela ou não
-#options.add_argument('--headless')
+options.add_argument('--headless')
 options.binary_location = r'C://Program Files//Mozilla Firefox//firefox.exe'
 service = Service(r'.//driver//geckodriver.exe')
 driver = webdriver.Firefox(service=service, options=options)
@@ -20,7 +20,7 @@ dados = {}
 def esperar_carregamento():
     time.sleep(4)
 
-def busca_trabalho_e_local():
+def busca_trabalho_e_local(job="Data Scientist", region="São Paulo - SP"):
     esperar_carregamento()
 
     keyword_input = driver.find_element(By.ID, 'text-input-what')
@@ -29,8 +29,8 @@ def busca_trabalho_e_local():
     keyword_input.clear()
     region_input.clear()
 
-    keyword_input.send_keys("Data Scientist")
-    region_input.send_keys("São Paulo, SP")
+    keyword_input.send_keys(job)
+    region_input.send_keys(region)
 
     submit_button = driver.find_element(By.CSS_SELECTOR, 'button[type=submit]')
     submit_button.click()
@@ -91,21 +91,18 @@ def fecha_popUP():
     except:
         pass
 
-def executar_scrapping():
-    busca_trabalho_e_local()
+def executar_scrapping(job, region, num_pags = 2):
+    busca_trabalho_e_local(job, region)
     aceita_cookie()
-    for i in range(0, 3):
+    for i in range(0, num_pags):
         pega_dados()
         
         passa_pagina()
 
         fecha_popUP()
 
-        
-        
-
     esperar_carregamento()
-    driver.quit()
+
 '''
 
 

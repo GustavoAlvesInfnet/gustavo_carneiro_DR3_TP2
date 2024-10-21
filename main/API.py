@@ -10,7 +10,7 @@ app = FastAPI()
 
 items = []
 
-# uvicorn main:app --reload
+# uvicorn api:app --reload
 
 @app.get("/")
 def read_root():
