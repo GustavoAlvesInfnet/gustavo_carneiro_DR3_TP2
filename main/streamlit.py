@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup as bs
 import requests
 import cachetools as ct
 
+from scrapping import *
+
 cacheIntro = ct.TTLCache(maxsize=float('inf'), ttl=86400)  
 cache = ct.TTLCache(maxsize=float('inf'), ttl=86400)
 def introducao():
@@ -33,10 +35,8 @@ def introducao():
 
         # Tabela
         st.header("Tabela")
-        df = pd.read_csv("data/enem.csv")
+        df = pd.read_csv("./data/enem copy.csv")
         df = df.sample(10000)
-        os.remove("data/enem.csv")
-        df.to_csv("data/enem.csv", index=False)
 
         st.write("Aqui está uma amostra dos dados que serão utilizados:")
         st.dataframe(df.head(10))
@@ -59,10 +59,10 @@ def analise_dinamica():
 
     # Tabela
     st.header("Tabela")
-    df = pd.read_csv("data/enem.csv")
+    df = pd.read_csv("./data/enem.csv")
     df = df.sample(10000)
-    os.remove("data/enem.csv")
-    df.to_csv("data/enem.csv", index=False)
+    os.remove("./data/enem.csv")
+    df.to_csv("./data/enem.csv", index=False)
     # adiciona uma coluna com a média das notas notas_ct, nota_ch, nota_lc, nota_mt, nota_redacao
 
     df['media_das_notas'] = df[['nota_ct', 'nota_ch', 'nota_lc', 'nota_mt', 'nota_redacao']].mean(axis=1)
@@ -121,26 +121,12 @@ def upload():
 
 
 def analise_web(): 
-    # Verifica se os dados estão no cache
-    if 'text' in cache:
-        st.write(cache['text'])
-    else:
-        # Requisição da página
-        url = 'https://www.romanews.com.br/cidades/hoje-e-dia-do-cliente-confira-lojas-com-programacao-especial-e-descontos-em-belem-0924'
+    # button para executar o scraping
+    if st.button('Executar o scraping'):
+        executar_scrapping()
 
-        # Requisição da página
-        response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-
-        # Verifica se a requisição foi bem-sucedida
-        if response.status_code == 200:
-            soup = bs(response.content, 'html.parser')
-            text = soup.get_text()
-            # Armazena os dados no cache
-            cache['text'] = text
-            st.write(text)
-        else:
-            print("Requisição não foi bem-sucedida")
-            print(f"Status code: {response.status_code}")
+    df = pd.read_json('./arquivosGerados/8_vagasIndeed.json')
+    st.dataframe(df)
 
 # Usa um sidebar para fazer a paginação
 page = st.sidebar.selectbox('Selecione uma opção', ['Introdução', 'Analise dinâmica', 'Upload para análise individual', 'Analise Web'])
